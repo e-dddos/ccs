@@ -1,0 +1,9 @@
+"./controller.obj"
+"./main.obj"
+"./navigate.obj"
+"./tm4c1294ncpdt_startup_ccs.obj"
+"./uart.obj"
+"./ultrasonic.obj"
+"../tm4c1294ncpdt.cmd"
+-llibc.a
+-l"/home/edward/ti/SW-TM4C-2.2.0.295/driverlib/ccs/Debug/driverlib.lib"

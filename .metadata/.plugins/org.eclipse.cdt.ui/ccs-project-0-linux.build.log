@@ -1,0 +1,8 @@
+
+**** Build of configuration Debug for project ccs-project-0-linux ****
+
+/home/edward/ti/ccs1220/ccs/utils/bin/gmake -k -j 4 all -O 
+ 
+gmake[1]: 'ccs-project-0-linux.out' is up to date.
+
+**** Build Finished ****
