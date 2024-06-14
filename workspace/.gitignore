@@ -1,4 +1,6 @@
 /.metadata/
-/.cproject
-/.project
-/.jxbrowser.userdata
+/dvt/
+/RemoteSystemsTempFiles/
+.cproject
+.project
+/.jxbrowser.userdata/
