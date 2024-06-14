@@ -5,7 +5,7 @@
 
 int main()
 {
-    //Create our Robot:
+    //Create our Roboot:
     struct Robot myrobot;
 
     initSetup();
