@@ -1,8 +1,0 @@
-
-**** Build of configuration Debug for project Bachelorprojekt_ed ****
-
-/home/edward/ti/ccs1220/ccs/utils/bin/gmake -k -j 4 all -O 
- 
-functions.d:5: *** target pattern contains no '%'.  Stop.
-
-**** Build Finished ****
