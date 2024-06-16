@@ -19,7 +19,7 @@ void uart_send_msg(char* msg){
         i++;
     }
     printf("finished sending '%s'\n", msg);
-    getchar();
+    //getchar();
 }
 
 // busy-waiting checking if device is ready (HIGH) or busy (LOW)

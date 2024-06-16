@@ -21,7 +21,7 @@
 #define RED(X) (0x01 << ((2*((X)-1))+1)) // convert to control sensor X's red LED
 #define TRIGGER(X) (GREEN(X)) // convert to control sensor X's trigger
 #define ECHO(X) (RED(X)) // convert to control sensor X's echo
-#define FIELDSIZE 200 // size of one field in mm
+#define FIELDSIZE 500 // size of one field in mm
 
 // function prototypes
 void initGPIO();

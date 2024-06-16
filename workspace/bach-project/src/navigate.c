@@ -43,7 +43,7 @@ void go_go_spiral(struct Robot *myrobot)
     {
         set_field_visited(myrobot); //Set the field where we are as visited
         printf("Set the new obstacles NOW and press Enter: \n");
-        //getchar(); //Press enter to continue
+        ////getchar(); //Press enter to continue
         get_free_directions_from_sensors((uint8_t*) myrobot->free_directions);
         save_obstacles(myrobot);
         check_if_finished(myrobot);
@@ -56,7 +56,7 @@ void go_go_spiral(struct Robot *myrobot)
             break;
         }
         printf("Press Enter to move: \n");
-        getchar(); //Press enter to continue
+        //getchar(); //Press enter to continue
         make_a_turn(myrobot); // turn in our preferred direction:
         move_forward(myrobot); //Move forward:
         printf("I moved forward!\n");
@@ -163,12 +163,15 @@ void get_best_directions(struct Robot *myrobot)
 
 void move_forward(struct Robot *myrobot)
 {
+    int i;
     //check if the Arduino is busy:
     receive_okay(0);
     // Send a message to move forward:
     uart_send_msg("forward");
-    //sleep 10 us
-    sleep();
+    //sleep 1 s
+    for (i=0;i<200000;i++) {
+        sleep();
+    }
     //wait until the Arduino finished moving:
     receive_okay(0);
 
@@ -208,6 +211,7 @@ void make_a_turn(struct Robot *myrobot)
 }
 void turn_right(struct Robot *myrobot)
 {
+    int i;
     if (myrobot->direction == 3)
         myrobot->direction = 0;
     else
@@ -217,8 +221,10 @@ void turn_right(struct Robot *myrobot)
     receive_okay(0);
     // Send a message to turn right:
     uart_send_msg("turn_right");
-    //sleep 10 us
-    sleep();
+    //sleep 1 s
+    for (i=0;i<200000;i++) {
+        sleep();
+    }
     //wait until the Arduino finished turning right:
     receive_okay(0);
 
@@ -226,6 +232,8 @@ void turn_right(struct Robot *myrobot)
 }
 void turn_left(struct Robot *myrobot)
 {
+    int i;
+
     if (myrobot->direction == 0)
         myrobot->direction = 3;
     else
@@ -235,8 +243,9 @@ void turn_left(struct Robot *myrobot)
     receive_okay(0);
     // Send a message to turn left:
     uart_send_msg("turn_left");
-    //sleep 10 us
-    sleep();
+    for (i=0;i<200000;i++) {
+            sleep();
+        }
     //wait until the Arduino finished turning left:
     receive_okay(0);
 
