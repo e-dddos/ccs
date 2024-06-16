@@ -5,6 +5,11 @@
  *      Author: Nils
  */
 
+/*Cables for UART:
+ * RED: TX
+ * GREEN: RX
+ * BLACK: GND
+ * */
 #ifndef UART_H_
 #define UART_H_
 

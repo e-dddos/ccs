@@ -106,7 +106,7 @@ void initUART(){
 
     UART6_LCRH_R = 0x60; // UART as 8N1 (0x60) and 1-byte-deep FIFO (cleared 0x10 bit)
     UART6_CC_R = 0x0; // use system clock for baud rate
-    UART6_CTL_R |= 0x200 | 0x1; // enable Rx (0x200), enable Tx (0x100) and UART6 (0x1)
+    UART6_CTL_R |= 0x100 | 0x200 | 0x1; // enable Rx (0x200), enable Tx (0x100) and UART6 (0x1)
 }
 
 void initSetup(){

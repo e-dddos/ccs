@@ -164,7 +164,7 @@ void get_best_directions(struct Robot *myrobot)
 void move_forward(struct Robot *myrobot)
 {
     // Send a message to move forward:
-    uart_send_msg("Tell to move_forward");
+    uart_send_msg("forward\n");
 
     // wait for the answer that we've done moving:
 
@@ -214,7 +214,7 @@ void turn_right(struct Robot *myrobot)
         myrobot->direction++;
 
     // Send a message to turn right:
-    uart_send_msg("Tell to turn_right");
+    uart_send_msg("turn_right\n");
 
     // wait for the answer that we've done turning:
     //  while(!uart_receive_msg()) {
@@ -230,7 +230,7 @@ void turn_left(struct Robot *myrobot)
         myrobot->direction--;
 
     // Send a message to turn left:
-    uart_send_msg("turn_left");
+    uart_send_msg("turn_left\n");
 
     // wait for the answer that we've done turning:
     //  while(!uart_receive_msg()) {
@@ -249,7 +249,9 @@ void set_field_visited(struct Robot *myrobot)
     myrobot->steps_done++;
 
     // Send coordinates to Hai Linh:
-    uart_send_msg("<x,y>");
+    char message[10];
+    sprintf(message, "<%d,%d>\n", myrobot->x_pos, myrobot->y_pos);
+    uart_send_msg(message);
 }
 
 void print_room(struct Robot *myrobot)
