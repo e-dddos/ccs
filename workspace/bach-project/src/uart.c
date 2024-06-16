@@ -19,9 +19,16 @@ void uart_send_msg(char* msg){
         i++;
     }
     printf("finished sending '%s'\n", msg);
+    getchar();
 }
 
-// wait until answer received
-void uart_receive_msg(){
-    // empty
+// busy-waiting checking if device is ready (HIGH) or busy (LOW)
+void receive_okay(int dev){
+    switch(dev){
+        case 0: while((GPIO_PORTB_AHB_DATA_R && 0x10) == 0x0); // PB4
+                break;
+        case 1: while((GPIO_PORTB_AHB_DATA_R && 0x20) == 0x0); // PB5
+                break;
+        default: printf("device couldn't be located.\n");
+    }
 }

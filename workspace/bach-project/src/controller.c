@@ -11,7 +11,8 @@
 
 // initialize GPIO pins
 void initGPIO(){
-    uint32_t ports = 0x2000 | 0x800 | 0x200 | 0x1; // PORT P (0x2000), PORT M (0x800), PORT K (0x200) and PORT A (0x1)
+    uint32_t ports = 0x2000 | 0x800 | 0x200 | 0x2 | 0x1 | 0x100; // PORT P (0x2000), PORT M (0x800), PORT K (0x200),
+                                                   // PORT B (0x2) and PORT A (0x1)
 
     SYSCTL_RCGCGPIO_R |= ports; // enable selected ports
     while(SYSCTL_PRGPIO_R != ports); // wait for stable clock on PORTs
@@ -20,6 +21,10 @@ void initGPIO(){
     GPIO_PORTA_AHB_DEN_R = 0xFF;
     GPIO_PORTA_AHB_DIR_R = 0x55; // PAx => x even: trigger; x odd: echo; e.g. PA0 is trigger pin of sensor 1
     GPIO_PORTA_AHB_DATA_R = 0x55; // set triggers to HIGH
+
+    // Receive lines
+    GPIO_PORTB_AHB_DEN_R = 0x30; //PB4 and PB5 as inputs
+    GPIO_PORTB_AHB_DIR_R = 0x00;
 
     // UART
     GPIO_PORTP_DEN_R = 0x03; // PP1 (U6Tx) and PP0 (U6Rx) for UART6
@@ -106,10 +111,23 @@ void initUART(){
 
     UART6_LCRH_R = 0x60; // UART as 8N1 (0x60) and 1-byte-deep FIFO (cleared 0x10 bit)
     UART6_CC_R = 0x0; // use system clock for baud rate
-    UART6_CTL_R |= 0x100 | 0x200 | 0x1; // enable Rx (0x200), enable Tx (0x100) and UART6 (0x1)
+    UART6_CTL_R |= 0x200 | 0x1; // enable Rx (0x200), enable Tx (0x100) and UART6 (0x1)
 }
 
 void initSetup(){
+    // only initialize board after USR_SW1 button press
+    SYSCTL_RCGCGPIO_R |= 0x100; // enable PORT J
+    while(SYSCTL_PRGPIO_R != 0x100); // wait for stable clock on PORT J
+
+    // enable PJ0 => USR_SW1
+    GPIO_PORTJ_AHB_DEN_R |= 0x1;
+    GPIO_PORTJ_AHB_DIR_R &= ~0x1; // PJ0 as input
+    GPIO_PORTJ_AHB_PUR_R |= 0x1; // add internal pull-up resistor
+
+    printf("Waiting for button press...\n");
+    while((GPIO_PORTJ_AHB_DATA_R && 0x1) == 0x1);
+    printf("Initializing Program.\n");
+
     initGPIO();
     initTimer();
     initUART();
@@ -154,4 +172,12 @@ uint8_t checkDistance(uint32_t threshold, uint32_t distance, uint8_t sensor){
         GPIO_PORTK_DATA_R &= ~RED(sensor); // turn off red LED
         return 1;
     }
+}
+
+//sleep for 10 micro seconds
+void sleep() {
+    TIMER3_CTL_R |= 0x1; // enable timer
+    while(!(TIMER3_RIS_R & 0x1)); // poll for time-out
+    TIMER3_CTL_R &= ~0x1; // disable timer
+    TIMER3_ICR_R = 0x1; // clear time-out flag
 }

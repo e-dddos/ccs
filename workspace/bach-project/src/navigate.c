@@ -43,7 +43,7 @@ void go_go_spiral(struct Robot *myrobot)
     {
         set_field_visited(myrobot); //Set the field where we are as visited
         printf("Set the new obstacles NOW and press Enter: \n");
-        getchar(); //Press enter to continue
+        //getchar(); //Press enter to continue
         get_free_directions_from_sensors((uint8_t*) myrobot->free_directions);
         save_obstacles(myrobot);
         check_if_finished(myrobot);
@@ -163,14 +163,14 @@ void get_best_directions(struct Robot *myrobot)
 
 void move_forward(struct Robot *myrobot)
 {
+    //check if the Arduino is busy:
+    receive_okay(0);
     // Send a message to move forward:
-    uart_send_msg("forward\n");
-
-    // wait for the answer that we've done moving:
-
-    // while(!uart_receive_msg()) {
-
-    // }
+    uart_send_msg("forward");
+    //sleep 10 us
+    sleep();
+    //wait until the Arduino finished moving:
+    receive_okay(0);
 
     // We check in which direction we're going and move through our room array
     switch (myrobot->direction)
@@ -213,12 +213,14 @@ void turn_right(struct Robot *myrobot)
     else
         myrobot->direction++;
 
+    //check if the Arduino is busy:
+    receive_okay(0);
     // Send a message to turn right:
-    uart_send_msg("turn_right\n");
-
-    // wait for the answer that we've done turning:
-    //  while(!uart_receive_msg()) {
-    //  }
+    uart_send_msg("turn_right");
+    //sleep 10 us
+    sleep();
+    //wait until the Arduino finished turning right:
+    receive_okay(0);
 
     printf("I turned right!\n");
 }
@@ -229,12 +231,15 @@ void turn_left(struct Robot *myrobot)
     else
         myrobot->direction--;
 
+    //check if the Arduino is busy:
+    receive_okay(0);
     // Send a message to turn left:
-    uart_send_msg("turn_left\n");
+    uart_send_msg("turn_left");
+    //sleep 10 us
+    sleep();
+    //wait until the Arduino finished turning left:
+    receive_okay(0);
 
-    // wait for the answer that we've done turning:
-    //  while(!uart_receive_msg()) {
-    //  }
     printf("I turned left!\n");
 }
 
@@ -250,7 +255,7 @@ void set_field_visited(struct Robot *myrobot)
 
     // Send coordinates to Hai Linh:
     char message[10];
-    sprintf(message, "<%d,%d>\n", myrobot->x_pos, myrobot->y_pos);
+    sprintf(message, "<%d,%d>", myrobot->x_pos, myrobot->y_pos);
     uart_send_msg(message);
 }
 

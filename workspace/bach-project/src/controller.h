@@ -30,5 +30,6 @@ void initUART();
 void initSetup();
 uint32_t getDistance(uint8_t sensor);
 uint8_t checkDistance(uint32_t threshold, uint32_t distance, uint8_t sensor);
+void sleep();
 
 #endif /* CONTROLLER_H_ */

@@ -5,11 +5,6 @@
  *      Author: Nils
  */
 
-/*Cables for UART:
- * RED: TX
- * GREEN: RX
- * BLACK: GND
- * */
 #ifndef UART_H_
 #define UART_H_
 
@@ -20,6 +15,6 @@
 
 // function prototypes
 void uart_send_msg(char* msg);
-void uart_receive_msg();
+void receive_okay(int dev);
 
 #endif /* UART_H_ */
