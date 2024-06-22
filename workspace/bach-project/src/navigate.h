@@ -6,8 +6,8 @@
 #include <stdint.h>
 #include <string.h>
 // Set the max room size, for now don't change.
-#define MAXLENGTH 5
-#define MAXWIDTH 5
+#define MAXLENGTH 9
+#define MAXWIDTH 6
 #define NUM_FIELDS (MAXLENGTH-2)*(MAXWIDTH-2)
 
 struct Robot
