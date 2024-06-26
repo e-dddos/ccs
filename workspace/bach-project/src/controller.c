@@ -25,6 +25,8 @@ void initGPIO(){
     // Receive lines
     GPIO_PORTB_AHB_DEN_R = 0x30; //PB4 and PB5 as inputs
     GPIO_PORTB_AHB_DIR_R = 0x00;
+    // GPIO_PORTB_AHB_PUR_R = 0x30; // pull-up resistors for PB5 and PB4
+    GPIO_PORTB_AHB_PDR_R = 0x30; // pull-down resistors for PB5 and PB4
 
     // UART
     GPIO_PORTP_DEN_R = 0x03; // PP1 (U6Tx) and PP0 (U6Rx) for UART6

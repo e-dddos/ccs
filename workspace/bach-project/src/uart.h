@@ -14,7 +14,7 @@
 #include <stdint.h>
 
 // function prototypes
-void uart_send_msg(char* msg);
+void uart_send_msg(char* msg, int dev);
 void receive_okay(int dev);
 
 #endif /* UART_H_ */

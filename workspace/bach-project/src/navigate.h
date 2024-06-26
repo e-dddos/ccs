@@ -6,8 +6,8 @@
 #include <stdint.h>
 #include <string.h>
 // Set the max room size, for now don't change.
-#define MAXLENGTH 9
-#define MAXWIDTH 6
+#define MAXLENGTH 5
+#define MAXWIDTH 5
 #define NUM_FIELDS (MAXLENGTH-2)*(MAXWIDTH-2)
 
 struct Robot
@@ -30,7 +30,6 @@ struct Robot
     bool free_directions[4];
     uint8_t best_directions[4];
     uint8_t pref_dir; //The direction we want to turn to.
-    // create a room array:
     uint8_t room[MAXLENGTH][MAXWIDTH];
     int steps_done;
     int fields_visited;
@@ -51,5 +50,6 @@ void print_room(struct Robot *myrobot);
 void go_go_spiral(struct Robot *myrobot);
 void print_status(struct Robot *myrobot);
 uint8_t find_min_index(uint8_t arr[], uint8_t size);
+void celebrate(void);
 
 #endif /*NAVIGATE_H*/

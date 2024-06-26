@@ -53,6 +53,7 @@ void go_go_spiral(struct Robot *myrobot)
         if (myrobot->finished == true)
         {
             printf("We finished!!!\n");
+            celebrate();
             break;
         }
         printf("Press Enter to move: \n");
@@ -60,7 +61,7 @@ void go_go_spiral(struct Robot *myrobot)
         make_a_turn(myrobot); // turn in our preferred direction:
         move_forward(myrobot); //Move forward:
         printf("I moved forward!\n");
-        print_room(myrobot);
+        //print_room(myrobot);
 
     }
 }
@@ -163,17 +164,9 @@ void get_best_directions(struct Robot *myrobot)
 
 void move_forward(struct Robot *myrobot)
 {
-    int i;
-    //check if the Arduino is busy:
-    receive_okay(0);
+
     // Send a message to move forward:
-    uart_send_msg("forward");
-    //sleep 1 s
-    for (i=0;i<200000;i++) {
-        sleep();
-    }
-    //wait until the Arduino finished moving:
-    receive_okay(0);
+    uart_send_msg("forward", 0);
 
     // We check in which direction we're going and move through our room array
     switch (myrobot->direction)
@@ -211,43 +204,27 @@ void make_a_turn(struct Robot *myrobot)
 }
 void turn_right(struct Robot *myrobot)
 {
-    int i;
     if (myrobot->direction == 3)
         myrobot->direction = 0;
     else
         myrobot->direction++;
 
-    //check if the Arduino is busy:
-    receive_okay(0);
     // Send a message to turn right:
-    uart_send_msg("turn_right");
-    //sleep 1 s
-    for (i=0;i<200000;i++) {
-        sleep();
-    }
-    //wait until the Arduino finished turning right:
-    receive_okay(0);
+    uart_send_msg("turn_right", 0);
 
     printf("I turned right!\n");
 }
 void turn_left(struct Robot *myrobot)
 {
-    int i;
 
     if (myrobot->direction == 0)
         myrobot->direction = 3;
     else
         myrobot->direction--;
 
-    //check if the Arduino is busy:
-    receive_okay(0);
+
     // Send a message to turn left:
-    uart_send_msg("turn_left");
-    for (i=0;i<200000;i++) {
-            sleep();
-        }
-    //wait until the Arduino finished turning left:
-    receive_okay(0);
+    uart_send_msg("turn_left", 0);
 
     printf("I turned left!\n");
 }
@@ -264,8 +241,8 @@ void set_field_visited(struct Robot *myrobot)
 
     // Send coordinates to Hai Linh:
     char message[10];
-    sprintf(message, "<%d,%d>", myrobot->x_pos, myrobot->y_pos);
-    uart_send_msg(message);
+    sprintf(message, "<%d,%d>", myrobot->x_pos-1, myrobot->y_pos-1);
+    uart_send_msg(message, 1);
 }
 
 void print_room(struct Robot *myrobot)
@@ -276,7 +253,7 @@ void print_room(struct Robot *myrobot)
     {
         for (y = 0; y < MAXWIDTH; y++)
         {
-            printf("%x ", myrobot->room[y][x]);
+            printf("%x ", myrobot->room[x][y]);
         }
         printf("\n");
     }
@@ -311,4 +288,18 @@ uint8_t find_min_index(uint8_t arr[], uint8_t size)
         }
     }
     return min;
+}
+
+void celebrate(void) {
+    int i, j, k;
+    for (k=0;k<100;k++) {
+        for (i=4;i>=1;i--) {
+            GPIO_PORTK_DATA_R |= GREEN(i); // turn on green LED
+            GPIO_PORTK_DATA_R |= RED(i); // turn on green LED
+            GPIO_PORTK_DATA_R &= ~GREEN((i+1)%4+1); // turn off green LED
+            GPIO_PORTK_DATA_R &= ~RED((i+1)%4+1); // turn off green LED
+            for (j=0;j<10000;j++)
+                sleep();
+        }
+    }
 }
